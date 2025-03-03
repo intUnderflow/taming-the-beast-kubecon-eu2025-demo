@@ -13,14 +13,19 @@ jobs:
     runs-on: ubuntu-latest
     environment: "production"
     steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ">=1.24.0"
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: go install sigs.k8s.io/kind@v0.27.0
       - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
-      - uses: actions/setup-go@v3
-        with:
-          go-version: ">=1.24.0"
-      - run: go install sigs.k8s.io/kind@v0.27.0
       - run: cd ${GITHUB_WORKSPACE}/kubernetes && hack/print-workspace-status.sh
       - run: kind build node-image ${GITHUB_WORKSPACE}/kubernetes --image ghcr.io/intunderflow/taming-the-beast-kubecon-eu2025-demo/node:${GITHUB_SHA}
       - run: docker push ghcr.io/intunderflow/taming-the-beast-kubecon-eu2025-demo/node:${GITHUB_SHA}
