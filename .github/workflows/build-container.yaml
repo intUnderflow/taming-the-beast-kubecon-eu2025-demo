@@ -20,5 +20,6 @@ jobs:
         with:
           go-version: ">=1.24.0"
       - run: go install sigs.k8s.io/kind@v0.27.0
+      - run: ls ${GITHUB_WORKSPACE}/kubernetes
       - run: kind build node-image ${GITHUB_WORKSPACE}/kubernetes --image ghcr.io/intunderflow/taming-the-beast-kubecon-eu2025-demo/node:${GITHUB_SHA}
       - run: docker push ghcr.io/intunderflow/taming-the-beast-kubecon-eu2025-demo/node:${GITHUB_SHA}
