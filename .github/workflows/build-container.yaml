@@ -28,4 +28,5 @@ jobs:
           fetch-depth: 0
       - run: cd ${GITHUB_WORKSPACE}/kubernetes && hack/print-workspace-status.sh
       - run: kind build node-image ${GITHUB_WORKSPACE}/kubernetes --image ghcr.io/intunderflow/taming-the-beast-kubecon-eu2025-demo/node:${GITHUB_SHA}
+      - run: kind create cluster --image ghcr.io/intunderflow/taming-the-beast-kubecon-eu2025-demo/node:${GITHUB_SHA}
       - run: docker push ghcr.io/intunderflow/taming-the-beast-kubecon-eu2025-demo/node:${GITHUB_SHA}
